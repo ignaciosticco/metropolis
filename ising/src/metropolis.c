@@ -21,7 +21,7 @@ int metropolis(int *lattice, int n, float T, float B, float J, float *magnet, fl
     flip(lattice,n,T,sitio);
     *energ=*energ+delta_energia;
     *magnet=*magnet+2*lattice[sitio];
-    printf("Energia en metropolis%f\n", *energ );
+    //printf("Energia en metropolis%f\n", *energ );
   } 
   else{
     p_pi=exp(-delta_energia/T);
@@ -30,7 +30,7 @@ int metropolis(int *lattice, int n, float T, float B, float J, float *magnet, fl
       flip(lattice, n, T, sitio);
       *energ=*energ+delta_energia;
       *magnet=*magnet+2*lattice[sitio]; 
-      printf("Energia en metropolis%f\n", *energ );
+      //printf("Energia en metropolis%f\n", *energ );
     }
     else{
     	delta_energia=0;
@@ -117,7 +117,7 @@ float calcula_energia_total(int *lattice, int n, float T,float B, float J){
     		} 
     	}
   	}
-  	energia_total=energiaB+energiaJ/2;
+  	energia_total=(energiaB+energiaJ/2)/((n-2)*(n-2));
   return energia_total;
 }
 
@@ -152,7 +152,7 @@ float calcula_delta_energia(int *lattice, int sitio,int n, float B, float J){
     }
   if(lattice[sitio]==-1) delta_energia=-delta_energia;
 
-  delta_energia=J*delta_energia+B*2*lattice[sitio];
+  delta_energia=(J*delta_energia+B*2*lattice[sitio])/((n-2)*(n-2));
 
   return delta_energia;
 
@@ -164,19 +164,9 @@ float calcula_magnetizacion (int*lattice, int n){
   float magnet=0;
 
   for (i=0;i<n*n;i++){
-    magnet+=lattice[i]/(float)n*n;
+    magnet+=lattice[i]/(float)((n-2)*(n-2));
   }
 
   return magnet;
 }
 
-float delta_M (int spin_antes, int spin_despues, int sitio, float magnet, int *lattice, int n){
-	
-  if (spin_antes==spin_despues){
-  	magnet=magnet;
-  }
-  else{
-  	magnet+=2*lattice[sitio]/n*n;
-  }
-  return magnet;
-}

@@ -6,5 +6,4 @@ int flip(int *lattice, int n, float T, int idx);
 float calcula_energia_total(int *lattice, int n, float T,float B, float J);
 float calcula_delta_energia(int *lattice, int sitio,int n, float B, float J);
 float calcula_magnetizacion (int*lattice, int n);
-float delta_M (int spin_antes, int spin_despues, int sitio, float magnet, int *lattice, int n);
 #endif
