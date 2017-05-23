@@ -6,26 +6,28 @@
 
 # define ERROR 9999
 
-int metropolis(int *lattice, int n, float T) {
-  //int delta_energia = 0;
+int metropolis(int *lattice, int n, float T, int *energia, int *magnetizacion) {
   int sitio = pick_site(lattice,n);
-  printf("SITIO:: %i\n", sitio );
+  //printf("SITIO:: %i\n", sitio );
   int delta_energia = calcula_delta_energia(lattice,sitio,n);
-  printf(" delta energia: %i\n", calcula_delta_energia(lattice,sitio,n));
+  //printf(" delta energia: %i\n", calcula_delta_energia(lattice,sitio,n));
   double p_pi = 0.0;
   double dado = 0.0;
   if(delta_energia<0){
     flip(lattice,n,T,sitio);
+    *magnetizacion = (-1)*lattice[sitio];
   } 
   else{
+
     p_pi=exp(-delta_energia/T);
     dado = (double)rand()/RAND_MAX;
     if (dado < p_pi){
-      flip(lattice, n, T, sitio); 
+      flip(lattice, n, T, sitio);
+      *magnetizacion = (-1)*lattice[sitio]; 
     }
   }
-
-
+  *energia+=*delta_energia;   // Actualiza el valor de la energia de la red. 
+  //printf("energia adentro metropolis: %i\n", energia);
   return delta_energia;
 }
 
@@ -37,7 +39,6 @@ int pick_site(int *lattice, int n) {
 	random = (double)rand()/RAND_MAX;
 	random =  random*n*n;
 	sitio = (int)(random);
-  printf("sitio: %i \n", sitio);
   
   if (sitio < n-1 ){
     sitio = pick_site(lattice, n);
@@ -137,6 +138,17 @@ int calcula_delta_energia(int *lattice, int sitio,int n){
   if(lattice[sitio]==-1) delta_energia=-delta_energia;
   return delta_energia;
 
+}
+
+int calcula_magnetizacion_total(int *lattice, int n){
+  int i,j;
+  int magnetizacion = 0;
+    for(i=1;i<n-1;i++){
+      for(j=1;j<n-1;j++){
+        magnetizacion += lattice[j+n*i];
+      }
+    }
+  return magnetizacion;
 }
 
 
