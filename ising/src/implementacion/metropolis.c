@@ -7,22 +7,26 @@
 # define ERROR 9999
 
 int metropolis(int *lattice, int n, float T) {
-  int delta_energia = 0;
+  //int delta_energia = 0;
   int sitio = pick_site(lattice,n);
   printf("SITIO:: %i\n", sitio );
-  //int delta_energia = calcula_delta_energia(lattice,sitio,n);
+  int delta_energia = calcula_delta_energia(lattice,sitio,n);
   printf(" delta energia: %i\n", calcula_delta_energia(lattice,sitio,n));
-  double p_pi = exp(-delta_energia/T);
-  double dado = (double)rand()/RAND_MAX;
+  double p_pi = 0.0;
+  double dado = 0.0;
   if(delta_energia<0){
-    p_pi=1;
+    flip(lattice,n,T,sitio);
   } 
-  if(dado<p_pi){
-    flip(lattice, n, T, sitio); 
+  else{
+    p_pi=exp(-delta_energia/T);
+    dado = (double)rand()/RAND_MAX;
+    if (dado < p_pi){
+      flip(lattice, n, T, sitio); 
+    }
   }
 
 
-  return 0;
+  return delta_energia;
 }
 
 int pick_site(int *lattice, int n) {
@@ -59,6 +63,23 @@ int pick_site(int *lattice, int n) {
 int flip(int *lattice, int n, float T, int idx) {
 
   lattice[idx] = -lattice[idx];
+
+	if(idx > n && idx < 2*n) {
+		lattice[idx + n*(n-2)]=lattice[idx];
+	}
+	
+	if(idx >n*(n-2) && idx < n*(n-1)) {
+		lattice[idx - n*(n-2)]=lattice[idx];
+	}
+
+	if(idx % n == 1) {
+		lattice[idx+(n-2)]=lattice[idx];
+	}
+
+	if(idx % n == (n-2)){
+		lattice[idx-(n-2)]=lattice[idx];
+	}
+	
   return 0;
 }
 
@@ -119,3 +140,13 @@ int calcula_delta_energia(int *lattice, int sitio,int n){
 }
 
 
+float magnetizacion (int*lattice, int n){
+  int i=0;
+  float magnet=0;
+
+  for (i=0;i<n*n;i++){
+    magnet+=lattice[i]/(float)n*n;
+  }
+
+  return magnet;
+}
