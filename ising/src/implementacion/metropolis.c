@@ -6,37 +6,26 @@
 
 # define ERROR 9999
 
-int metropolis(int *lattice, int n, float T, float B, float J, float *magnet, float *energ) {
+int metropolis(int *lattice, int n, float T) {
   //int delta_energia = 0;
   int sitio = pick_site(lattice,n);
-  //int spin_antes= lattice[sitio];
-  //int spin_despues= 0;
-  //printf("SITIO:: %i\n", sitio );
-  float delta_energia = calcula_delta_energia(lattice,sitio,n,B,J);
-  printf(" delta energia: %f\n", calcula_delta_energia(lattice,sitio,n,B,J));
+  printf("SITIO:: %i\n", sitio );
+  int delta_energia = calcula_delta_energia(lattice,sitio,n);
+  printf(" delta energia: %i\n", calcula_delta_energia(lattice,sitio,n));
   double p_pi = 0.0;
   double dado = 0.0;
-  
   if(delta_energia<0){
     flip(lattice,n,T,sitio);
-    *energ=*energ+delta_energia;
-    *magnet=*magnet+2*lattice[sitio];
-    printf("Energia en metropolis%f\n", *energ );
   } 
   else{
     p_pi=exp(-delta_energia/T);
     dado = (double)rand()/RAND_MAX;
     if (dado < p_pi){
-      flip(lattice, n, T, sitio);
-      *energ=*energ+delta_energia;
-      *magnet=*magnet+2*lattice[sitio]; 
-      printf("Energia en metropolis%f\n", *energ );
-    }
-    else{
-    	delta_energia=0;
+      flip(lattice, n, T, sitio); 
     }
   }
-  
+
+
   return delta_energia;
 }
 
@@ -48,7 +37,7 @@ int pick_site(int *lattice, int n) {
 	random = (double)rand()/RAND_MAX;
 	random =  random*n*n;
 	sitio = (int)(random);
-  //printf("sitio: %i \n", sitio);
+  printf("sitio: %i \n", sitio);
   
   if (sitio < n-1 ){
     sitio = pick_site(lattice, n);
@@ -95,13 +84,10 @@ int flip(int *lattice, int n, float T, int idx) {
 }
 
 
-float calcula_energia_total(int *lattice, int n, float T,float B, float J){
+int calcula_energia_total(int *lattice, int n, float T){
 	int i, j, k, s1, s2;
-	float energiaJ = 0.0;
+	int energia = 0;
 	int vecinos[4];
-	float energiaB=0.0;
-	float energia_total=0.0;
-
 	for(i=1;i<n-1;i++){
     	for(j=1;j<n-1;j++){
     		s1 = lattice[j+n*i];
@@ -109,21 +95,19 @@ float calcula_energia_total(int *lattice, int n, float T,float B, float J){
     		vecinos[1] = lattice[j+1+n*i];
     		vecinos[2] = lattice[j+n*(i+1)];
     		vecinos[3] = lattice[(j-1)+n*i];   
-    		energiaB+=B*s1;
-
     		for (k=0;k<4;k++){
     			s2 = vecinos[k]; 
-    			energiaJ += -J*s1*s2; 
+    			energia += -s1*s2; 
     		} 
     	}
   	}
-  	energia_total=energiaB+energiaJ/2;
-  return energia_total;
+
+  return energia/2;
 }
 
 // Sacado de la diapositiva de metropolis de Dorso pag 22
-float calcula_delta_energia(int *lattice, int sitio,int n, float B, float J){
-    float delta_energia;
+int calcula_delta_energia(int *lattice, int sitio,int n){
+    int delta_energia;
     int vecino_up = lattice[sitio-n];
     int vecino_down = lattice[sitio+n];
     int vecino_derecha = lattice[sitio + 1];
@@ -132,34 +116,31 @@ float calcula_delta_energia(int *lattice, int sitio,int n, float B, float J){
     if (vecino_up*vecino_down*vecino_izquierda*vecino_derecha){
       if(vecino_up==vecino_down && vecino_up==vecino_izquierda \
        && vecino_up==vecino_derecha && vecino_up==1){
-       delta_energia = 8.0;
+       delta_energia = 8;
       }
       else if(vecino_up==vecino_down && vecino_up==vecino_izquierda \
        && vecino_up==vecino_derecha && vecino_up==-1){
-       delta_energia = -8.0;  
+       delta_energia = -8;  
       }
       else{
-        delta_energia = 0.0;
+        delta_energia = 0;
       }
     }
     if (vecino_up*vecino_down*vecino_izquierda*vecino_derecha<0){
       if(vecino_up+vecino_down+vecino_izquierda+vecino_derecha>0){
-        delta_energia = 4.0;
+        delta_energia = 4;
       }
       if(vecino_up+vecino_down+vecino_izquierda+vecino_derecha<0){
-        delta_energia = -4.0;
+        delta_energia = -4;
       }
     }
   if(lattice[sitio]==-1) delta_energia=-delta_energia;
-
-  delta_energia=J*delta_energia+B*2*lattice[sitio];
-
   return delta_energia;
 
 }
 
 
-float calcula_magnetizacion (int*lattice, int n){
+float magnetizacion (int*lattice, int n){
   int i=0;
   float magnet=0;
 
@@ -167,16 +148,5 @@ float calcula_magnetizacion (int*lattice, int n){
     magnet+=lattice[i]/(float)n*n;
   }
 
-  return magnet;
-}
-
-float delta_M (int spin_antes, int spin_despues, int sitio, float magnet, int *lattice, int n){
-	
-  if (spin_antes==spin_despues){
-  	magnet=magnet;
-  }
-  else{
-  	magnet+=2*lattice[sitio]/n*n;
-  }
   return magnet;
 }
