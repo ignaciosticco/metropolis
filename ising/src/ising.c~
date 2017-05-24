@@ -9,11 +9,11 @@
 void escribir(float vector1[],float vector2[],int niter);
 
 int main(int argc, char **argv) {
-  int n = 34;
+  int n = 10;
   int *lattice = malloc(n * n * sizeof(int));
-  float prob = 0.5;
+  float prob = 1.0;
   float T = 5.0;
-  int niter = (n-2)*(n-2)*100;
+  int niter = n*n*5;
   //int *vector_energia= malloc(sizeof(int));
   //float *vector_magnetizacion= malloc(sizeof(float));
   float vector_energia= 0;
@@ -26,8 +26,8 @@ int main(int argc, char **argv) {
   vector_energia=calcula_energia_total(lattice,n,T,0,1);
   vector_magnetizacion=calcula_magnetizacion (lattice,n);
   //print_lattice(lattice, n);
-  printf("energia %f\n", vector_energia );
-  printf("Magnetizacion %f\n", vector_magnetizacion);
+  printf("%f\n", vector_energia );
+  //printf("%f\n", *vect_magnetizacion);
   for (int i = 0; i < niter; i++) {
     //printf("VALOR i: %i\n",i );
     //printf("%i\n",calcula_delta_energia(lattice, 10, n) );
@@ -41,7 +41,6 @@ int main(int argc, char **argv) {
     //vect_magnetizacion[i]=magetiza_total;
   }
   escribir(energia_final,magnetizacion_final,niter);
-  //printf("%f, %f\n",vector_energia, calcula_energia_total(lattice,n,T,0,1));
   //print_lattice(lattice, n);
   free(lattice);
   free(energia_final);
@@ -56,7 +55,7 @@ void escribir(float vector1[],float vector2[],int niter){
   
   for(i=0;i<niter;i++){
 
-    fprintf(fp, "%.6f \t %.6f \n",vector1[i],vector2[i]);
+    fprintf(fp, "%f \t %f \n",vector1[i],vector2[i]);
   }  
 
   fclose(fp);
