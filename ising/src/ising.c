@@ -25,23 +25,16 @@ int main(int argc, char **argv) {
   fill_lattice(lattice, n, prob);
   vector_energia=calcula_energia_total(lattice,n,T,0,1);
   vector_magnetizacion=calcula_magnetizacion (lattice,n);
-  //print_lattice(lattice, n);
-  printf("energia %f\n", vector_energia );
-  printf("Magnetizacion %f\n", vector_magnetizacion);
+
+  //printf("energia %f\n", vector_energia );
   for (int i = 0; i < niter; i++) {
-    //printf("VALOR i: %i\n",i );
-    //printf("%i\n",calcula_delta_energia(lattice, 10, n) );
-    //print_lattice(lattice, n);
+
     metropolis(lattice, n, T,0,1,&vector_magnetizacion,&vector_energia);
     energia_final[i]= vector_energia;
     magnetizacion_final[i]= vector_magnetizacion;
-    //printf("Energia%f\n", energia_final[i] );
-    //printf("Magnetizacion%f\n", magnetizacion_final[i]);
-    //printf("Vector energia:%i\n", vector_energia[i]);
-    //vect_magnetizacion[i]=magetiza_total;
+
   }
   escribir(energia_final,magnetizacion_final,niter);
-  //printf("%f, %f\n",vector_energia, calcula_energia_total(lattice,n,T,0,1));
   //print_lattice(lattice, n);
   free(lattice);
   free(energia_final);

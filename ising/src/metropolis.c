@@ -14,7 +14,7 @@ int metropolis(int *lattice, int n, float T, float B, float J, float *magnet, fl
   //int spin_despues= 0;
   //printf("SITIO:: %i\n", sitio );
   float delta_energia = calcula_delta_energia(lattice,sitio,n,B,J);
-  //printf(" delta energia: %f\n", calcula_delta_energia(lattice,sitio,n,B,J));
+  //printf("delta_energia: %f \n",delta_energia*((n-2)*(n-2)));
   double p_pi = 0.0;
   double dado = 0.0;
   
@@ -22,23 +22,25 @@ int metropolis(int *lattice, int n, float T, float B, float J, float *magnet, fl
     flip(lattice,n,T,sitio);
     *energ=*energ+delta_energia;
     *magnet=*magnet+2*lattice[sitio]/(float)((n-2)*(n-2));
-    //printf("Energia en metropolis%f\n", *energ );
+    //printf("Entro al if \n");
   } 
   else{
 
-    p_pi=exp(-delta_energia/T);
+    p_pi=exp(-delta_energia*((n-2)*(n-2))/T);
     dado = (double)rand()/(double)RAND_MAX;
+    //printf("Entro al else: p_pi: %f dado: %f \n",p_pi,dado);
     if (dado < p_pi){
       flip(lattice, n, T, sitio);
       *energ=*energ+delta_energia;
       *magnet=*magnet+2*lattice[sitio]/(float)((n-2)*(n-2)); 
-      //printf("Energia en metropolis%f\n", *energ );
+      //printf("yes flips\n");
     }
-    //else{
+    else{
       //printf("no flips\n");
-    	//delta_energia=0;
-    //}
+    	delta_energia=0;
+    }
   }
+  //printf("\n");
   return delta_energia;
 }
 
