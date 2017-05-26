@@ -185,7 +185,32 @@ float calcula_magnetizacion (int*lattice, int n){
         magnet+=lattice[j+n*i]/(float)((n-2)*(n-2));
       }
     }
-
   return magnet;
+}
+
+void calcula_correlacion(float* vector_magnitud,int longitud_magnitud,float* vector_correlacion,int k_max, int iter_corr_max){
+
+float promedio_magnitud;
+float denominador = 0.0;
+float numerador = 0.0;
+int i,k;
+for(i=0;i<longitud_magnitud;i++){
+  promedio_magnitud+=vector_magnitud[i]/longitud_magnitud;
+}
+
+for(i=0;i<longitud_magnitud;i++){
+  denominador += (vector_magnitud[i]-promedio_magnitud)*(vector_magnitud[i]-promedio_magnitud);
+}
+
+for(k=0;k<k_max;k++){
+  numerador = 0.0;
+  for(i=0;i<longitud_magnitud-k;i++){
+      numerador += (vector_magnitud[i]-promedio_magnitud)*(vector_magnitud[i+k]-promedio_magnitud);
+  }
+vector_correlacion[k] += numerador/(float)(denominador*iter_corr_max);
+//printf("correlacion %f\n",vector_correlacion[k]);
+}
+
+
 }
 
