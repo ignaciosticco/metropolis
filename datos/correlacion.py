@@ -33,13 +33,12 @@ pylab.rcParams.update(params)
 
 ###  DATA  ###
 
-data1 = np.genfromtxt('termalizacion_T2_N32.txt', delimiter = '\t')
+data1 = np.genfromtxt('correlacion_N32_T5.txt', delimiter = '\t')
 
 n = 32
 
-energia = data1[:,0]
-magnetizacion = data1[:,1]
-iteracion = np.linspace(0,len(energia),len(energia))
+ro = data1
+iteracion = np.linspace(0,len(ro),len(ro))
 unidad_red = n*n
 
 ###  PLOT  ###
@@ -47,11 +46,11 @@ unidad_red = n*n
 pylab.figure(1)
 pylab.clf()
 
-plt.plot(iteracion[::100]/unidad_red,energia[::100],'bo',markersize=2,zorder=3,label='energia') 
+plt.plot(iteracion/1,ro,'bo',markersize=2,zorder=3,label='N=32 T=5 ') 
 #plt.plot(magnetizacion[::100],'ro',markersize=3,zorder=3,label='magnetizacion') 
 
 pylab.xlabel('Iteracion~/~size red')
-pylab.ylabel('Magnitud')
+pylab.ylabel('correlation')
 pylab.legend()
 #pylab.ylim(1.00, 1.014)
 #pylab.ylim(1.00, 1.04)
@@ -62,4 +61,4 @@ pylab.legend()
 #lgd=plt.legend(numpoints=1,handlelength=0.8) 
 #lgd.set_visible(True)
 plt.legend(loc='best',labelspacing=-0.1,borderpad=0.3,handletextpad=0.5,fontsize=6,numpoints=1)
-pylab.savefig('termalizacion2.eps', format='eps', dpi=300, bbox_inches='tight')
+pylab.savefig('correlacion_N32_T5.eps', format='eps', dpi=300, bbox_inches='tight')

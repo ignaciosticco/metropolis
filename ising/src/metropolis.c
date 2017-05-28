@@ -207,9 +207,9 @@ for(k=0;k<k_max;k++){
   for(i=0;i<longitud_magnitud-k;i++){
       numerador += (vector_magnitud[i]-promedio_magnitud)*(vector_magnitud[i+k]-promedio_magnitud);
   }
-vector_correlacion[k] += numerador/(float)(denominador*iter_corr_max);
-//printf("correlacion %f\n",vector_correlacion[k]);
-}
+  vector_correlacion[k] += numerador/(float)(denominador*iter_corr_max);
+  //printf("correlacion %f\n",vector_correlacion[k]);
+ }
 
 
 }
