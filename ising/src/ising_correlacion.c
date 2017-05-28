@@ -9,7 +9,7 @@
 void escribir2(float vector[],int size);
 
 int main(int argc, char **argv) {
-  int   n = 8;
+  int   n = 34;
   float prob = 0.5;
   float T = 5.0;
   int   niter = 11*(n-2)*(n-2);
@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 void escribir2(float vector[],int size){
   int i;
   FILE *fp;
-  fp = fopen("correlacion_N8_T5.txt","w");
+  fp = fopen("correlacion_N32_T5.txt","w");
   for(i=0;i<size;i++){
     fprintf(fp, "%.6f \n",vector[i]);
   }  
