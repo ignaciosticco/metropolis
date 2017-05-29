@@ -33,7 +33,7 @@ pylab.rcParams.update(params)
 
 ###  DATA  ###
 
-data1 = np.genfromtxt('M_E_T_N32.txt', delimiter = '\t')
+data1 = np.genfromtxt('T_M_E_N32.txt', delimiter = '\t')
 
 temperatura = data1[:,0]
 magnetizacion = data1[:,1]
@@ -49,7 +49,7 @@ plt.plot(temperatura,abs(magnetizacion),'bo',markersize=2,zorder=3,label='N=32 '
 pylab.xlabel('Temperatura')
 pylab.ylabel('Magnetizacion')
 pylab.legend()
-#pylab.ylim(1.00, 1.014)
+pylab.ylim(0.0, 1.1)
 #pylab.ylim(1.00, 1.04)
 #pylab.yticks(np.arange(1,1.04,0.01))
 #pylab.xlim(0.0, 1.1)
