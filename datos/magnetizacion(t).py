@@ -33,7 +33,7 @@ pylab.rcParams.update(params)
 
 ###  DATA  ###
 
-data1 = np.genfromtxt('T_M_E_N32_2.txt', delimiter = '\t')
+data1 = np.genfromtxt('T_M_E_N32.txt', delimiter = '\t')
 
 temperatura = data1[:,0]
 magnetizacion = data1[:,1]

@@ -6,14 +6,14 @@
 #include "metropolis.h"
 #include "lattice.h"
 
-void escribir(float vector1[],float vector2[],float vector3[],int niter);
+void escribir(float vector1[],int niter,char *str);
 
 int main(int argc, char **argv) {
   int   n = 34;
   float prob = 0.5;
-  int   cant_T = 100;
-  float T_min = 0.0;
-  float T_max = 3.0;
+  int   cant_T = 5;
+  float T_min = 2.3;
+  float T_max = 2.7;
   int   iter_descorr = 10*(n-2)*(n-2); // cantidad de iteraciones para descorrelacionar 
   float energia = 0.0;
   float magnetizacion = 0.0;
@@ -22,20 +22,20 @@ int main(int argc, char **argv) {
   int   n_termalizacion = 11*(n-2)*(n-2); // cantidad de iteraciones para termalizar
   int   *lattice = malloc(n * n * sizeof(int));
   float vector_T[cant_T];
-  float M[cant_T];
-  float E[cant_T];
+  float M[cant_iter];
   float delta_T = (T_max - T_min)/(cant_T-1);
   float T;
+  char  str[50];
 
   srand(time(NULL));
 
-  fill_lattice(lattice, n, prob);
+  fill_lattice(lattice, n, prob); // Crea la red
 
   // Inicializo vectores
   for(itera_T = 0;itera_T<cant_T;itera_T++){
     vector_T[itera_T] = T_max - delta_T*itera_T;
-    E[itera_T] = 0.0;
-    M[itera_T] = 0.0;
+    //E[itera_T] = 0.0;
+    //M[itera_T] = 0.0;
   }
 
 
@@ -57,24 +57,26 @@ int main(int argc, char **argv) {
       for (int i = 0; i < iter_descorr; i++) {
         metropolis(lattice, n, T,0,1,&magnetizacion,&energia);
       }
+
       // Sumo el valor de M y E luego de "iter_descorr" pasos para descorrelacionar el sistema
-      M[itera_T]+=magnetizacion/(float)cant_iter;
-      E[itera_T]+=energia/(float)cant_iter;
+      M[j] = magnetizacion;
     }
+    sprintf(str,"magnetizacion_vsiteracion_T%f_N32.txt",T);
+    escribir(M,cant_iter,str);
   }  
-  escribir(vector_T,M,E,cant_T);
+  
   free(lattice);
   return 0;
 }
 
-void escribir(float vector1[],float vector2[],float vector3[],int niter){
+void escribir(float vector1[],int niter,char *str){
   int i;
   FILE *fp;
-  fp = fopen("T_M_E_N32.txt","w");
+  fp = fopen(str,"w");
   
   for(i=0;i<niter;i++){
 
-    fprintf(fp, "%.6f \t %.6f \t %.6f \n",vector1[i],vector2[i],vector3[i]);
+    fprintf(fp, "%.2f \n",vector1[i]);
   }  
 
   fclose(fp);
