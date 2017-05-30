@@ -11,9 +11,9 @@ void escribir(float vector1[],float vector2[],float vector3[],int niter);
 int main(int argc, char **argv) {
   int   n = 34;
   float prob = 0.5;
-  int   cant_T = 200;
+  int   cant_T = 100;
   float T_min = 0.0;
-  float T_max = 5.0;
+  float T_max = 3.0;
   int   iter_descorr = 10*(n-2)*(n-2); // cantidad de iteraciones para descorrelacionar 
   float energia = 0.0;
   float magnetizacion = 0.0;
@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
 
   // Inicializo vectores
   for(itera_T = 0;itera_T<cant_T;itera_T++){
-    vector_T[itera_T] = T_min + delta_T*itera_T;
+    vector_T[itera_T] = T_max - delta_T*itera_T;
     E[itera_T] = 0.0;
     M[itera_T] = 0.0;
   }
