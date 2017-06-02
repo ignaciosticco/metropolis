@@ -33,23 +33,23 @@ pylab.rcParams.update(params)
 
 ###  DATA  ###
 
-data1 = np.genfromtxt('T_M_E_N32_test.txt', delimiter = '\t')
+data1 = np.genfromtxt('T_cv_suscept_N32.txt', delimiter = '\t')
 
 temperatura = data1[:,0]
-magnetizacion = data1[:,1]
-energia = data1[:,2]
+cv = data1[:,1]
+susceptibilidad = data1[:,2]
 
 ###  PLOT  ###
 
 pylab.figure(1)
 pylab.clf()
 
-plt.plot(temperatura,abs(magnetizacion),'bo',markersize=2,zorder=3,label='N=32 ') 
+plt.plot(temperatura,cv,'bo',markersize=3,zorder=3,label='N=32 ') 
 
 pylab.xlabel('Temperatura')
-pylab.ylabel('Magnetizacion')
+pylab.ylabel('cv')
 pylab.legend()
-pylab.ylim(0.0, 1.1)
+#pylab.ylim(0.0, 1.1)
 #pylab.ylim(1.00, 1.04)
 #pylab.yticks(np.arange(1,1.04,0.01))
 #pylab.xlim(0.0, 1.1)
@@ -58,4 +58,4 @@ pylab.ylim(0.0, 1.1)
 #lgd=plt.legend(numpoints=1,handlelength=0.8) 
 #lgd.set_visible(True)
 plt.legend(loc='best',labelspacing=-0.1,borderpad=0.3,handletextpad=0.5,fontsize=6,numpoints=1)
-pylab.savefig('M(T)_N32_test.eps', format='eps', dpi=300, bbox_inches='tight')
+pylab.savefig('CV(T)_N32.eps', format='eps', dpi=300, bbox_inches='tight')
