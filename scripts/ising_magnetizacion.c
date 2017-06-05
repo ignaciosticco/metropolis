@@ -11,10 +11,10 @@ void escribir(float vector1[],float vector2[],float vector3[],int niter);
 int main(int argc, char **argv) {
   int   n = 34;
   float prob = 0.5;
-  int   cant_T = 100;
-  float T_min = 0.0;
-  float T_max = 3.0;
-  int   iter_descorr = 10*(n-2)*(n-2); // cantidad de iteraciones para descorrelacionar 
+  int   cant_T = 50;
+  float T_min = 2.2;
+  float T_max = 2.4;
+  int   iter_descorr = 2*(n-2)*(n-2); // cantidad de iteraciones para descorrelacionar 
   float energia = 0.0;
   float magnetizacion = 0.0;
   int   i,j, itera_T;
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
 void escribir(float vector1[],float vector2[],float vector3[],int niter){
   int i;
   FILE *fp;
-  fp = fopen("T_M_E_N32.txt","w");
+  fp = fopen("T_M_E_N32_1.txt","w");
   
   for(i=0;i<niter;i++){
 
