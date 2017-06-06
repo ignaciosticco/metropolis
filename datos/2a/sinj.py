@@ -34,12 +34,16 @@ pylab.rcParams.update(params)
 ###  DATA  ###
 
 data1 = np.genfromtxt('sinj_N32_1.txt', delimiter = '\t')
+data2 = np.genfromtxt('magnetizacion_vsT_N32_B0.80.txt', delimiter = '\t')
 
 
 temperatura = data1[:,0]
 magnetizacion = data1[:,1]
 energia = data1[:,2]
 
+temperatura2 = data2[:,0]
+magnetizacion2 = data2[:,1]
+energia2 = data2[:,2]
 
 
 ###  PLOT  ###
@@ -47,7 +51,9 @@ energia = data1[:,2]
 pylab.figure(1)
 pylab.clf()
 
-plt.plot(temperatura,abs(magnetizacion),'bo',markersize=2,zorder=3,label='N=32 ') 
+plt.plot(temperatura,abs(magnetizacion),'ro',markersize=2,zorder=3,label='B=1 ') 
+plt.plot(temperatura2,abs(magnetizacion2),'bo',markersize=2,zorder=3,label='B=0.8') 
+
 
 pylab.xlabel('Temperatura')
 pylab.ylabel('Magnetizacion')
@@ -61,4 +67,4 @@ pylab.ylim(0.0, 1.1)
 #lgd=plt.legend(numpoints=1,handlelength=0.8) 
 #lgd.set_visible(True)
 plt.legend(loc='best',labelspacing=-0.1,borderpad=0.3,handletextpad=0.5,fontsize=6,numpoints=1)
-pylab.savefig('M(T)_J0_B1.eps', format='eps', dpi=300, bbox_inches='tight')
+pylab.savefig('M(T)_J0_B1_B0.8.eps', format='eps', dpi=300, bbox_inches='tight')
